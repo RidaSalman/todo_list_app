@@ -5,13 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 
@@ -27,6 +27,7 @@ class UserInfo : AppCompatActivity() {
     val USER_EMAIL_KEY = stringPreferencesKey("user_email")
     val USER_PHONE_KEY = stringPreferencesKey("user_phone")
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info)
 
@@ -70,7 +71,7 @@ class UserInfo : AppCompatActivity() {
                 showToast("Data saved")
 
                 // Start the second activity
-                val intent = Intent(this@UserInfo, DashbaoadAc::class.java)
+                val intent = Intent(this@UserInfo, Dashboard::class.java)
                 intent.putExtra("name", name)
                 intent.putExtra("email", email)
                 intent.putExtra("phone", phone)

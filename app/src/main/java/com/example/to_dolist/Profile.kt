@@ -2,6 +2,7 @@ package com.example.to_dolist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,7 @@ class Profile : AppCompatActivity() {
     val USER_EMAIL_KEY = stringPreferencesKey("user_email")
     val USER_PHONE_KEY = stringPreferencesKey("user_phone")
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
