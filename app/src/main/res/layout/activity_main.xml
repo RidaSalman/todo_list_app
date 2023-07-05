@@ -55,7 +55,7 @@
             android:layout_marginTop="52dp"
             android:backgroundTint="@color/white"
             android:text="START NOW"
-            android:textColor="@color/black2"
+            android:textColor="@color/startnowtext"
             android:textSize="13sp"
             android:textStyle="bold"
             app:cornerRadius="40dp"
