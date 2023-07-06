@@ -33,9 +33,11 @@ class FeaturedAdapter1(private val featuredLocations: ArrayList<FeaturedHelperCl
         if (position == 1) {
             holder.title1.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.Completetext))
         }
-        if (position == 1) {
-            holder.description1.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.grey1))
+        if (position == 1){
+            holder.description1.visibility = View.GONE
         }
+
+
 
     }
 
@@ -47,7 +49,7 @@ class FeaturedAdapter1(private val featuredLocations: ArrayList<FeaturedHelperCl
         // Define your views here
         var description1 : TextView = itemView.findViewById(R.id.description1)
         var title1 : TextView = itemView.findViewById(R.id.title1)
-        var image1 : ImageView = itemView.findViewById(R.id.imageView2011)
+        var image1 : ImageView = itemView.findViewById(R.id.imageView2019)
         var main1 : CardView = itemView.findViewById(R.id.main1)
 
 

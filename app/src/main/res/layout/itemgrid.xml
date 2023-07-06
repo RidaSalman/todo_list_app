@@ -10,17 +10,17 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:layout_weight="1"
         android:elevation="0dp"
+        android:layout_marginHorizontal="5dp"
         app:cardCornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <RelativeLayout
-            android:layout_width="470dp"
+            android:layout_width="wrap_content"
             android:layout_height="160dp"
 
             >
@@ -66,6 +66,13 @@
 
 
         </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="173dp" />
 
 
 

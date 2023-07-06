@@ -26,18 +26,5 @@ class Profile : AppCompatActivity() {
         emailTextView = findViewById(R.id.txt_e)
         phoneTextView = findViewById(R.id.txt_p)
 
-        // Retrieve user information from Preferences DataStore
-        val dataStore = applicationContext.dataStore
-        lifecycleScope.launch {
-            val preferences = dataStore.data.first()
-            val name = preferences[USER_NAME_KEY]
-            val email = preferences[USER_EMAIL_KEY]
-            val phone = preferences[USER_PHONE_KEY]
-
-            // Set the user information in TextViews
-            nameTextView.text = "Name: $name"
-            emailTextView.text = "Email: $email"
-            phoneTextView.text = "Phone: $phone"
-        }
     }
 }

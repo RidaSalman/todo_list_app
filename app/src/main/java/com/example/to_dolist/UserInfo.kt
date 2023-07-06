@@ -1,46 +1,48 @@
 package com.example.to_dolist
 
-import android.content.Context
+import DataPreference
+import DataPreference.Companion.Remember_UserEmail
+import DataPreference.Companion.Remember_UserName
+import DataPreference.Companion.Remember_UserPhone
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.Toast
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
-val Context.dataStore by preferencesDataStore(name = "user_prefs")
-
 class UserInfo : AppCompatActivity() {
-    private lateinit var nameTextInput: TextInputLayout
-    private lateinit var emailTextInput: TextInputLayout
-    private lateinit var phoneTextInput: TextInputLayout
-    private lateinit var registerButton: Button
 
-    val USER_NAME_KEY = stringPreferencesKey("user_name")
-    val USER_EMAIL_KEY = stringPreferencesKey("user_email")
-    val USER_PHONE_KEY = stringPreferencesKey("user_phone")
+    private lateinit var nameTextInput: TextInputEditText
+    private lateinit var emailTextInput: TextInputEditText
+    private lateinit var phoneTextInput: TextInputEditText
+    private lateinit var registerButton: Button
+    private lateinit var dataPreference: DataPreference
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_info)
+
+        dataPreference = DataPreference(this)
 
         nameTextInput = findViewById(R.id.reg_name)
         emailTextInput = findViewById(R.id.reg_email)
         phoneTextInput = findViewById(R.id.reg_phone)
         registerButton = findViewById(R.id.button)
 
+
         registerButton.setOnClickListener {
             // Get user input
-            val name = nameTextInput.editText?.text.toString()
-            val email = emailTextInput.editText?.text.toString()
-            val phone = phoneTextInput.editText?.text.toString()
+            val name = nameTextInput.text.toString()
+            val email = emailTextInput.text.toString()
+            val phone = phoneTextInput.text.toString()
 
             // Validate user input
             if (name.isEmpty()) {
@@ -58,30 +60,24 @@ class UserInfo : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
             // Store user information in Preferences DataStore
-            val dataStore = applicationContext.dataStore
-            lifecycleScope.launch {
-                dataStore.edit { preferences ->
-                    preferences[USER_NAME_KEY] = name
-                    preferences[USER_EMAIL_KEY] = email
-                    preferences[USER_PHONE_KEY] = phone
-                }
 
-                showToast("Data saved")
-
-                // Start the second activity
-                val intent = Intent(this@UserInfo, Dashboard::class.java)
-                intent.putExtra("name", name)
-                intent.putExtra("email", email)
-                intent.putExtra("phone", phone)
-                startActivity(intent)
-            }
+            startDashboardActivity()
         }
     }
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+    private fun startDashboardActivity() {
+        lifecycleScope.launch{
+            dataPreference.setStringData(Remember_UserName,nameTextInput.text.toString())
+            dataPreference.setStringData(Remember_UserEmail,emailTextInput.text.toString())
+            dataPreference.setStringData(Remember_UserPhone,phoneTextInput.text.toString())
+
+        }
+        val intent = Intent(this, Dashboard::class.java)
+        intent.putExtra("Name",nameTextInput.text.toString())
+        startActivity(intent)
     }
+
 }
 
 fun String.isValidPhoneNumber(): Boolean {

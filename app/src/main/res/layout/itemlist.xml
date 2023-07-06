@@ -1,72 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/main1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_height="150dp"
+        android:layout_marginHorizontal="5dp"
         android:layout_weight="1"
         android:elevation="0dp"
+        android:padding="20dp"
         app:cardCornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <RelativeLayout
-            android:layout_width="470dp"
-            android:layout_height="164dp"
-
-            >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
             <ImageView
-                android:id="@+id/imageView2011"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/cancel1"
-                tools:ignore="ContentDescription" />
+                android:id="@+id/imageView2019"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/cancellogo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/description1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title1"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="30dp"
-                android:text="10 Task"
-                android:textColor="@color/task10"
-                android:textSize="15sp" />
+                android:layout_margin="15dp"
+                android:layout_toEndOf="@id/imageView2019"
+                android:text="Ongoing"
+                android:textColor="@color/Completetext"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title1" />
 
             <TextView
                 android:id="@+id/title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView2011"
-                android:layout_marginStart="20dp"
-
-                android:text="Ongoing"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+                android:layout_marginStart="10dp"
+                android:text="Add New"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2019"
+                app:layout_constraintStart_toEndOf="@+id/imageView2019"
+                app:layout_constraintTop_toTopOf="@+id/imageView2019" />
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="160dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
