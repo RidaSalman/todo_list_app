@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.to_dolist.Helperclasses.FeaturedHelperClass
 import com.example.to_dolist.Helperclasses.FeaturedHelperClass1
 import com.example.to_dolist.R
 
@@ -31,7 +29,7 @@ class FeaturedAdapter1(private val featuredLocations: ArrayList<FeaturedHelperCl
         holder.main1.setCardBackgroundColor(item.color1)
 
         if (position == 1) {
-            holder.title1.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.Completetext))
+            holder.title1.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorDarkGrey))
         }
         if (position == 1){
             holder.description1.visibility = View.GONE

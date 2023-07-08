@@ -109,7 +109,7 @@
             android:id="@+id/reg_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,7 +120,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="58dp"
         android:layout_marginRight="40dp"
-        android:backgroundTint="@color/sunflower_yellow"
+        android:backgroundTint="@color/colorYellow"
         android:text="Register"
         android:textColor="@color/black"
         android:textSize="14sp"/>

@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="dark_blue">#57409E</color>
+    <color name="colorDarkBlue">#57409E</color>
+    <color name="colorWhite1">#FFF1EB</color>
+    <color name="colorWhite2">#F5F5F6</color>
+    <color name="colorDarkGrey">#64697E</color>
+    <color name="colorGrey">#8B8E9B</color>
+    <color name="colorYellow">#FFBE21</color>
+    <color name="colorYellowOpacity">#FFF8E9</color>
+    <color name="colorOrange">#FF7235</color>
+    <color name="colorLightPink">#FFF8F5</color>
+    <color name="colorLightgrey">#EFEDF1</color>
+
+
     <color name="white">#FFFFFFFF</color>
     <color name="startnowtext">#373C52</color>
     <color name="black">#D6000000</color>
     <color name="grey1">#8B8E9B</color>
-    <color name="task10">#EBEBEB</color>
     <color name="darkGrey">#666666</color>
-    <color name="sunflower_yellow">#FFBE21</color>
-    <color name="Completetext">#64697E</color>
-    <color name="orange">#FFF1EB</color>
-    <color name="white1">#F5F5F6</color>
+
+
+
     <color name="orange1">#FFF8E9</color>
-
-
-
-
-
 
 
 

@@ -4,8 +4,6 @@ import android.graphics.drawable.Drawable
 
 
 data class FeaturedHelperClass(
-    val image: Drawable?,
     val title: String,
-    val description: String,
-    val color:Int,
+    val color: Int = 0,
 )

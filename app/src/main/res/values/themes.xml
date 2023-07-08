@@ -15,7 +15,7 @@
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:background">@drawable/shape1</item>
+        <item name="android:background">@drawable/background_stroke</item>
         <item name="android:queryBackground">@null</item>
         <item name="android:submitBackground">@null</item>
         <item name="android:searchHintIcon">@null</item>

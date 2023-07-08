@@ -1,53 +1,78 @@
 package com.example.to_dolist.Adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.Helperclasses.FeaturedHelperClass
 import com.example.to_dolist.R
 
-class FeaturedAdapter(private val featuredLocations: ArrayList<FeaturedHelperClass>) : RecyclerView.Adapter<FeaturedAdapter.ViewHolder>() {
+class FeaturedAdapter(private val dataList: ArrayList<FeaturedHelperClass>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.itemgrid, parent, false)
-        return ViewHolder(view)
-    }
+    // Define the view types
+    private val VIEW_TYPE_1 = 1
+    private val VIEW_TYPE_2 = 2
+    private val VIEW_TYPE_3 = 3
 
-    @SuppressLint("ResourceAsColor")
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = featuredLocations[position]
-        // Bind the data to the views in ViewHolder
-        holder.description.text=item.description
-        holder.title.text=item.title
-        holder.image.setImageDrawable(item.image)
-        holder.main.setCardBackgroundColor(item.color)
-
-        if (position == 1) {
-            holder.title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.Completetext))
-        }
-        if (position == 1) {
-            holder.description.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.grey1))
-        }
-
-    }
+    // Implement the necessary methods: getItemCount, getItemViewType, and onCreateViewHolder
 
     override fun getItemCount(): Int {
-        return featuredLocations.size
+        return dataList.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Define your views here
-        var description : TextView = itemView.findViewById(R.id.description)
-        var title : TextView = itemView.findViewById(R.id.title)
-        var image : ImageView = itemView.findViewById(R.id.imageView201)
-        var main : CardView = itemView.findViewById(R.id.main)
+    override fun getItemViewType(position: Int): Int {
+        val data = dataList[position]
+        return when (position) {
+            0 -> VIEW_TYPE_1
+            1 -> VIEW_TYPE_2
+            else -> VIEW_TYPE_3
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            VIEW_TYPE_1 -> {
+                val view = inflater.inflate(R.layout.row_item_home_header, parent, false)
+                Type1ViewHolder(view)
+            }
+            VIEW_TYPE_2 -> {
+                val view = inflater.inflate(R.layout.row_item_section_title, parent, false)
+                Type2ViewHolder(view)
+            }
+            else -> {
+                val view = inflater.inflate(R.layout.row_item_task, parent, false)
+                Type3ViewHolder(view)
+            }
+        }
+    }
 
 
+    inner class Type1ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    }
+
+    inner class Type2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    }
+
+    inner class Type3ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var taskBackground : CardView = itemView.findViewById(R.id.mainBackground)
+    }
+
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val data = dataList[position]
+        when (holder) {
+            is Type1ViewHolder -> {
+                // Bind data and handle clicks for view type 1
+            }
+            is Type2ViewHolder -> {
+                // Bind data and handle clicks for view type 2
+            }
+            is Type3ViewHolder -> {
+
+               holder.taskBackground.setCardBackgroundColor(data.color)
+            }
+        }
     }
 }
