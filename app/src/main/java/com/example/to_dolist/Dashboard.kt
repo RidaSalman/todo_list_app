@@ -8,7 +8,6 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.Adapters.FeaturedAdapter
@@ -39,14 +38,13 @@ class Dashboard : AppCompatActivity() {
         initRecyclerView()
 
 
-        if (intent.hasExtra("Name")){
+        if (intent.hasExtra("Name")) {
             name = intent.getStringExtra("Name").toString()
-        }else{
-            lifecycleScope.launch{
+        } else {
+            lifecycleScope.launch {
                 name = dataPreference.getStringData(Remember_UserName)
             }
         }
-
 
 
         // Display the greeting message with the name
@@ -54,21 +52,33 @@ class Dashboard : AppCompatActivity() {
         nameTextView.text = greetingMessage
     }
 
-private fun initRecyclerView() {
+    private fun initRecyclerView() {
 
-    val data = ArrayList<FeaturedHelperClass>()
-    data.add(FeaturedHelperClass("hello"))
-    data.add(FeaturedHelperClass("hello"))
-    data.add(FeaturedHelperClass("hello",ContextCompat.getColor(this,R.color.colorWhite2)))
-    data.add(FeaturedHelperClass("hello",ContextCompat.getColor(this,R.color.colorLightPink)))
-    data.add(FeaturedHelperClass("hello",ContextCompat.getColor(this,R.color.colorLightgrey)))
-    data.add(FeaturedHelperClass("hello",ContextCompat.getColor(this,R.color.colorWhite2)))
-    data.add(FeaturedHelperClass("hello",ContextCompat.getColor(this,R.color.colorLightPink)))
+        val data = ArrayList<FeaturedHelperClass>()
+        /*val taskCount = ArrayList<TaskData>()
+        val onGoingTask = ArrayList<OnGoingTask>()
+        val complete = ArrayList<CompleteTask>()
+        val cancelTask = ArrayList<CancelTask>()
+        onGoingTask.add(OnGoingTask("one",""))
+        complete.add(CompleteTask("one",""))
+        complete.add(CompleteTask("two",""))
+        cancelTask.add(CancelTask("one",""))
+        cancelTask.add(CancelTask("two",""))
 
-    recyclerView.layoutManager = LinearLayoutManager(this)
-    recyclerView.adapter = FeaturedAdapter(data)
-}
+        taskCount.add(TaskData(onGoingTask,complete,cancelTask))*/
 
+        data.add(FeaturedHelperClass("one", ContextCompat.getColor(this, R.color.colorWhite2)))
+        data.add(FeaturedHelperClass("two", ContextCompat.getColor(this, R.color.colorLightPink)))
+        data.add(FeaturedHelperClass("three", ContextCompat.getColor(this, R.color.colorLightgrey)))
+        data.add(FeaturedHelperClass("four", ContextCompat.getColor(this, R.color.colorWhite2)))
+        data.add(FeaturedHelperClass("five", ContextCompat.getColor(this, R.color.colorLightPink)))
+        data.add(FeaturedHelperClass("five", ContextCompat.getColor(this, R.color.colorLightPink)))
+        data.add(FeaturedHelperClass("five", ContextCompat.getColor(this, R.color.colorLightPink)))
+        data.add(FeaturedHelperClass("five", ContextCompat.getColor(this, R.color.colorLightPink)))
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = FeaturedAdapter(data)
+    }
 
 
 }
