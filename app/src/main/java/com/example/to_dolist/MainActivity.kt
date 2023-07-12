@@ -13,9 +13,6 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dataPreference: DataPreference
-
-
-
     private lateinit var startButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
