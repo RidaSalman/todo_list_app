@@ -22,4 +22,10 @@
         <item name="android:searchIcon">@drawable/ic_search</item>
     </style>
 
+    <style name="PurpleDatePickerDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorPrimary">@color/colorDarkBlue</item>
+        <item name="colorPrimaryVariant">@color/colorDarkBlue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
 </resources>
