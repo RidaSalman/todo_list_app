@@ -1,29 +1,43 @@
 package com.example.to_dolist
 
+import Task
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.DatePicker
-import android.widget.PopupMenu
-import android.widget.Toast
+import android.widget.*
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
+import com.example.to_dolist.Database.TaskDao
+import com.example.to_dolist.Database.TaskDatabase
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.launch
 import java.util.*
 
 class AddNew : AppCompatActivity() {
+
+    private lateinit var database: TaskDatabase
+    private lateinit var taskDao: TaskDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new)
 
+        database = Room.databaseBuilder(
+            applicationContext,
+            TaskDatabase::class.java,
+            "task_database"
+        ).build()
+
+        taskDao = database.taskDao()
+
+        val addTaskButton: Button = findViewById(R.id.button2)
+        addTaskButton.setOnClickListener {
+            saveTaskToDatabase()
+        }
+
         val items = listOf("Work", "Shopping", "Fun", "Category")
-        val autoComplete: AutoCompleteTextView = findViewById(R.id.auto_complete)
+        val autoComplete: AutoCompleteTextView = findViewById(R.id.category)
         val adapter = ArrayAdapter(this, R.layout.list_item, items)
         autoComplete.setAdapter(adapter)
         autoComplete.onItemClickListener =
@@ -32,7 +46,7 @@ class AddNew : AppCompatActivity() {
                 Toast.makeText(this, "Item: $itemSelected", Toast.LENGTH_SHORT).show()
             }
 
-        val editText: TextInputEditText = findViewById(R.id.time)
+        val editText: TextInputEditText = findViewById(R.id.date)
         val calendar = Calendar.getInstance()
 
         val initialYear = calendar.get(Calendar.YEAR)
@@ -57,6 +71,25 @@ class AddNew : AppCompatActivity() {
             } else {
                 false
             }
+        }
+
+    }
+
+    private fun saveTaskToDatabase() {
+        val title = findViewById<EditText>(R.id.title).text.toString()
+        val category = findViewById<EditText>(R.id.category).text.toString()
+        val description = findViewById<EditText>(R.id.description).text.toString()
+        val date = findViewById<EditText>(R.id.date).text.toString()
+        val status = findViewById<EditText>(R.id.status).text.toString()
+
+        if (title.isNotEmpty() && category.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty() && status.isNotEmpty()) {
+            val newTask = Task(title = title, category = category, description = description, date = date, status = status)
+            lifecycleScope.launch {
+                taskDao.insert(newTask)
+                finish()
+            }
+        } else {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -122,7 +122,7 @@
             android:layout_marginRight="1dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/date"
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -151,7 +151,7 @@
             android:layout_marginRight="1dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/time"
+                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -179,7 +179,7 @@
             android:layout_marginRight="1dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/event"
+                android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />

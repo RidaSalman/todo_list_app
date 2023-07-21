@@ -9,11 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.to_dolist.CreateTaskFragment
+import com.example.to_dolist.*
 import com.example.to_dolist.Helperclasses.FeaturedHelperClass
-import com.example.to_dolist.MainActivity
-import com.example.to_dolist.R
-import com.example.to_dolist.UserInfo
 
 class FeaturedAdapter(private val dataList: ArrayList<FeaturedHelperClass>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -120,7 +117,7 @@ class FeaturedAdapter(private val dataList: ArrayList<FeaturedHelperClass>) :
     }
 
     private fun openCreateTaskScreen(context: Context) {
-        val intent = Intent(context, UserInfo::class.java)
+        val intent = Intent(context, AddNew::class.java)
         context.startActivity(intent)
     }
 }
