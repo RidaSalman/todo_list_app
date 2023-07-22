@@ -8,17 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.Adapters.FeaturedAdapter
+import com.example.to_dolist.Database.Task
+import com.example.to_dolist.Database.TaskDatabase
+import com.example.to_dolist.Database.myExt.showToast
 import com.example.to_dolist.Helperclasses.FeaturedHelperClass
 import kotlinx.coroutines.launch
 
 
-
-class DashboardFragment : Fragment() {
+class DashboardFragment : Fragment(),  FeaturedAdapter.TaskDeleteListener {
     private lateinit var nameTextView: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var dataPreference: DataPreference
@@ -30,14 +33,15 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val myView =  inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val myView = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
         nameTextView = myView.findViewById(R.id.textView3)
         recyclerView = myView.findViewById(R.id.recyclerview)
         dataPreference = DataPreference(requireContext())
 
-
-        initRecyclerView()
+        TaskDatabase.getInstance(requireContext().applicationContext).taskDao().getAllTasks().observe(viewLifecycleOwner){ todos ->
+            initRecyclerView(todos)
+        }
 
 
         if (requireActivity().intent.hasExtra("Name")) {
@@ -55,21 +59,21 @@ class DashboardFragment : Fragment() {
         return myView
     }
 
-    private fun initRecyclerView() {
+    override fun onDeleteTask(task: Task) {
+        // Implement the logic to delete the task from the database here
+        // For example, you can use the taskDao to delete the task
+        lifecycleScope.launch {
+            TaskDatabase.getInstance(requireContext().applicationContext).taskDao().delete(task)
+            requireContext().showToast("Task Deleted")
+        }
+    }
 
-        val data = ArrayList<FeaturedHelperClass>()
 
-        data.add(FeaturedHelperClass("one", ContextCompat.getColor(requireContext(), R.color.colorWhite2)))
-        data.add(FeaturedHelperClass("two", ContextCompat.getColor(requireContext(), R.color.colorLightPink)))
-        data.add(FeaturedHelperClass("three", ContextCompat.getColor(requireContext(), R.color.colorLightgrey)))
-        data.add(FeaturedHelperClass("four", ContextCompat.getColor(requireContext(), R.color.colorWhite2)))
-        data.add(FeaturedHelperClass("five", ContextCompat.getColor(requireContext(), R.color.colorLightPink)))
-        data.add(FeaturedHelperClass("five", ContextCompat.getColor(requireContext(), R.color.colorLightPink)))
-        data.add(FeaturedHelperClass("five", ContextCompat.getColor(requireContext(), R.color.colorLightPink)))
-        data.add(FeaturedHelperClass("five", ContextCompat.getColor(requireContext(), R.color.colorLightPink)))
+    private fun initRecyclerView(data:List<Task>) {
+
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = FeaturedAdapter(data)
+        recyclerView.adapter = FeaturedAdapter(data, this)
     }
 
 

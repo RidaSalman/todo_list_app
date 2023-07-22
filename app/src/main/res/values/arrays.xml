@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="card_colors">
+        <item>@color/colorWhite2</item>
+        <item>@color/colorLightPink</item>
+        <item>@color/colorLightgrey</item>
+    </integer-array>
+</resources>

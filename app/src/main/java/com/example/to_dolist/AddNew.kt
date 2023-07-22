@@ -1,37 +1,50 @@
 package com.example.to_dolist
-
-import Task
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.*
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import com.example.to_dolist.Database.TaskDao
+import com.example.to_dolist.Database.Task
 import com.example.to_dolist.Database.TaskDatabase
+import com.example.to_dolist.Database.myExt.showToast
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import java.util.*
 
 class AddNew : AppCompatActivity() {
 
-    private lateinit var database: TaskDatabase
-    private lateinit var taskDao: TaskDao
-
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new)
 
-        database = Room.databaseBuilder(
-            applicationContext,
-            TaskDatabase::class.java,
-            "task_database"
-        ).build()
-
-        taskDao = database.taskDao()
-
+        val taskId = intent.getLongExtra("taskId", -1)
         val addTaskButton: Button = findViewById(R.id.button2)
+
+
+        if (taskId != -1L) {
+            addTaskButton.text = "UPDATE"
+            // Fetch the task details from the database using the taskId
+            lifecycleScope.launch {
+                val task = TaskDatabase.getInstance(applicationContext).taskDao().getTaskById(taskId)
+
+                // Populate the UI fields with the fetched task details
+                task?.let {
+                    findViewById<EditText>(R.id.title).setText(it.title)
+                    findViewById<EditText>(R.id.category).setText(it.category)
+                    findViewById<EditText>(R.id.description).setText(it.description)
+                    findViewById<EditText>(R.id.date).setText(it.date)
+                    findViewById<EditText>(R.id.status).setText(it.status)
+                }
+            }
+        } else {
+            // TaskId is not provided, it's a new task addition
+            // Set the button text to "Add Task"
+            addTaskButton.text = "ADD TASK"
+        }
+
         addTaskButton.setOnClickListener {
             saveTaskToDatabase()
         }
@@ -72,7 +85,6 @@ class AddNew : AppCompatActivity() {
                 false
             }
         }
-
     }
 
     private fun saveTaskToDatabase() {
@@ -83,15 +95,36 @@ class AddNew : AppCompatActivity() {
         val status = findViewById<EditText>(R.id.status).text.toString()
 
         if (title.isNotEmpty() && category.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty() && status.isNotEmpty()) {
+            val taskId = intent.getLongExtra("taskId", -1)
             val newTask = Task(title = title, category = category, description = description, date = date, status = status)
+
             lifecycleScope.launch {
-                taskDao.insert(newTask)
+                if (taskId != -1L) {
+                    // If taskId is not -1, it means we are updating an existing task
+                    newTask.id = taskId // Set the taskId for the existing task
+                    updateTaskInDatabase(newTask)
+                } else {
+                    // If taskId is -1, it means we are adding a new task
+                    insertTaskToDatabase(newTask)
+                }
                 finish()
             }
         } else {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private suspend fun insertTaskToDatabase(task: Task) {
+        TaskDatabase.getInstance(applicationContext).taskDao().insert(task)
+    }
+
+    private suspend fun updateTaskInDatabase(task: Task) {
+        TaskDatabase.getInstance(applicationContext).taskDao().update(task)
+        showToast("Task updated")
+        finish()
+    }
+
+
 
     private fun showCalendarDialog(textInputEditText: TextInputEditText) {
         val calendar = Calendar.getInstance()
@@ -103,12 +136,19 @@ class AddNew : AppCompatActivity() {
             this,
             { _: DatePicker?, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
                 // Handle the selected date
+                val formattedMonth = (selectedMonth + 1).toString().padStart(2, '0')
+                // Create a map to convert month number to month name
+                val monthNames = mapOf(
+                    "01" to "Jan", "02" to "Feb", "03" to "Mar", "04" to "Apr",
+                    "05" to "May", "06" to "Jun", "07" to "Jul", "08" to "Aug",
+                    "09" to "Sep", "10" to "Oct", "11" to "Nov", "12" to "Dec"
+                )
                 val selectedDate = String.format(
                     Locale.getDefault(),
-                    "%d-%02d-%02d",
-                    selectedYear,
-                    selectedMonth + 1,
-                    selectedDay
+                    "%02d %s, %d",
+                    selectedDay,
+                    monthNames[formattedMonth],
+                    selectedYear
                 )
                 textInputEditText.setText(selectedDate)
             },
