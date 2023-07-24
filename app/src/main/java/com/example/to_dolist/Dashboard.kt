@@ -1,25 +1,10 @@
 package com.example.to_dolist
 
-import DataPreference
-import DataPreference.Companion.Remember_UserName
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.to_dolist.Adapters.FeaturedAdapter
-import com.example.to_dolist.Helperclasses.FeaturedHelperClass
-import com.example.to_dolist.databinding.ActivityDashbaoadBinding
-import com.example.to_dolist.databinding.ActivityUserInfoBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.launch
 
 class Dashboard : AppCompatActivity() {
 

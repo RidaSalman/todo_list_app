@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +15,6 @@ import com.example.to_dolist.Adapters.FeaturedAdapter
 import com.example.to_dolist.Database.Task
 import com.example.to_dolist.Database.TaskDatabase
 import com.example.to_dolist.Database.myExt.showToast
-import com.example.to_dolist.Helperclasses.FeaturedHelperClass
 import kotlinx.coroutines.launch
 
 
