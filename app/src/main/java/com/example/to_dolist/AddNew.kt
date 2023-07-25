@@ -1,6 +1,7 @@
 package com.example.to_dolist
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -116,6 +117,7 @@ class AddNew : AppCompatActivity() {
 
     private suspend fun insertTaskToDatabase(task: Task) {
         TaskDatabase.getInstance(applicationContext).taskDao().insert(task)
+
     }
 
     private suspend fun updateTaskInDatabase(task: Task) {

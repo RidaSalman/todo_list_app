@@ -134,6 +134,14 @@ class FeaturedAdapter(private val dataList: List<Task>, private val taskDeleteLi
                 showPopupMenu(data)
             }
 
+            cardView.setOnClickListener {
+                // Open the AddDetails activity and pass the task ID
+                val context = itemView.context
+                val intent = Intent(context, AddDetails::class.java)
+                intent.putExtra("taskId", data.id)
+                context.startActivity(intent)
+            }
+
         }
 
         private fun showPopupMenu(task: Task) {
