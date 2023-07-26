@@ -13,4 +13,12 @@ data class Task(
     val description: String,
     val date: String,
     val status: String
+
+)
+@Entity(tableName = "subtasks")
+data class SubTask(
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0,
+    val subTitle: String,
+
 )

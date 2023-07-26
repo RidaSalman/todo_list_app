@@ -3,13 +3,16 @@ package com.example.to_dolist
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.Adapters.CalenderAdapter
+import com.example.to_dolist.Adapters.SubTaskAdapter
+import com.example.to_dolist.Database.SubTask
 import com.example.to_dolist.Database.TaskDatabase
+import com.example.to_dolist.Dialogs.DialogAddTask
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -21,7 +24,17 @@ class AddDetails : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CalenderAdapter
     private lateinit var pieChart: PieChart
-    val colorClassArray = intArrayOf(Color.LTGRAY, Color.BLUE, Color.CYAN, Color.DKGRAY, Color.GREEN, Color.MAGENTA, Color.RED)
+    private lateinit var subtaskAdapter: SubTaskAdapter
+    private lateinit var button: ImageView
+    val colorClassArray = intArrayOf(
+        Color.LTGRAY,
+        Color.BLUE,
+        Color.CYAN,
+        Color.DKGRAY,
+        Color.GREEN,
+        Color.MAGENTA,
+        Color.RED
+    )
     val colorsList = colorClassArray.toList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +45,10 @@ class AddDetails : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerview_calender)
         adapter = CalenderAdapter()
         pieChart = findViewById(R.id.pie_chart)
+        button = findViewById(R.id.imageView_sub_task)
 
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
         val pieDataSet = PieDataSet(dataValues1(), "")
@@ -47,13 +62,18 @@ class AddDetails : AppCompatActivity() {
         pieChart.description.isEnabled = false
         pieChart.setDrawEntryLabels(false)// Disable chart description
 
+        TaskDatabase.getInstance(applicationContext).subtaskDao().getAllSubTasks().observe(this){ t ->
+            setAdapter(t)
+        }
+
         pieChart.invalidate()
 
         val taskId = intent.getLongExtra("taskId", -1)
         if (taskId != -1L) {
             // Fetch the task details from the database using the taskId
             lifecycleScope.launch {
-                val task = TaskDatabase.getInstance(applicationContext).taskDao().getTaskById(taskId)
+                val task =
+                    TaskDatabase.getInstance(applicationContext).taskDao().getTaskById(taskId)
 
                 // Update the UI with the task details
                 task?.let {
@@ -63,7 +83,24 @@ class AddDetails : AppCompatActivity() {
                 }
             }
         }
+
+        button.setOnClickListener {
+            val dialog = DialogAddTask(this, true, onRightButtonClickListener = { dialog, taskTitle ->
+
+                lifecycleScope.launch {
+
+                }
+                dialog.dismiss()
+
+            }, onLeftButtonClickListener = { dialog ->
+                dialog.dismiss()
+
+            })
+
+            dialog.show()
+        }
     }
+
 
     private fun dataValues1(): ArrayList<PieEntry> {
         val dataVals = ArrayList<PieEntry>()
@@ -78,4 +115,11 @@ class AddDetails : AppCompatActivity() {
 
         return dataVals
     }
+
+    fun setAdapter(subtaskList: List<SubTask>){
+        subtaskAdapter = SubTaskAdapter(subtaskList)
+        recyclerView.adapter = subtaskAdapter
+    }
+
+
 }

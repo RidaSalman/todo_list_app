@@ -1,12 +1,10 @@
 package com.example.to_dolist.Database
 
-import androidx.annotation.NonNull
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Update
 import androidx.room.Delete
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -26,4 +24,19 @@ interface  TaskDao{
 
     @Query("SELECT * FROM tasks WHERE id = :taskId")
     suspend fun getTaskById(taskId: Long): Task?
+}
+
+@Dao
+interface SubTaskDao{
+    @Insert
+    suspend fun insert(subTask: SubTask)
+
+    @Update
+    suspend fun update(subtask: SubTask)
+
+    @Delete
+    suspend fun delete(subtask: SubTask)
+
+    @Query("SELECT * FROM subtasks ORDER BY id DESC")
+    fun getAllSubTasks(): LiveData<List<SubTask>>
 }
