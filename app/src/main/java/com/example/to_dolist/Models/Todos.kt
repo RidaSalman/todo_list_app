@@ -20,5 +20,5 @@ data class SubTask(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     val subTitle: String,
-
 )
+

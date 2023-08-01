@@ -21,10 +21,12 @@ import kotlinx.coroutines.launch
 
 class AddDetails : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
+
     private lateinit var adapter: CalenderAdapter
     private lateinit var pieChart: PieChart
+    private lateinit var recyclerViewSubTask: RecyclerView
     private lateinit var subtaskAdapter: SubTaskAdapter
+    private val subTaskList = mutableListOf<SubTask>()
     private lateinit var button: ImageView
     val colorClassArray = intArrayOf(
         Color.LTGRAY,
@@ -42,14 +44,15 @@ class AddDetails : AppCompatActivity() {
         setContentView(R.layout.activity_add_details)
 
 
-        recyclerView = findViewById(R.id.recyclerview_calender)
+
+
+
         adapter = CalenderAdapter()
         pieChart = findViewById(R.id.pie_chart)
         button = findViewById(R.id.imageView_sub_task)
 
-        recyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = adapter
+
+
 
         val pieDataSet = PieDataSet(dataValues1(), "")
         pieDataSet.colors = colorsList
@@ -62,9 +65,7 @@ class AddDetails : AppCompatActivity() {
         pieChart.description.isEnabled = false
         pieChart.setDrawEntryLabels(false)// Disable chart description
 
-        TaskDatabase.getInstance(applicationContext).subtaskDao().getAllSubTasks().observe(this){ t ->
-            setAdapter(t)
-        }
+
 
         pieChart.invalidate()
 
@@ -84,10 +85,26 @@ class AddDetails : AppCompatActivity() {
             }
         }
 
-        button.setOnClickListener {
-            val dialog = DialogAddTask(this, true, onRightButtonClickListener = { dialog, taskTitle ->
 
+        // Set up the RecyclerView for subtasks
+        recyclerViewSubTask = findViewById(R.id.recyclerview_subtask)
+        recyclerViewSubTask.layoutManager = LinearLayoutManager(this)
+        subtaskAdapter = SubTaskAdapter(subTaskList) // Pass the mutable list to the adapter
+        recyclerViewSubTask.adapter = subtaskAdapter
+
+        // Fetch and display subtasks when the activity is created
+        fetchAndDisplaySubTasks()
+
+
+        button.setOnClickListener {
+            val dialog = DialogAddTask(this, true, onRightButtonClickListener = { dialog, subtaskTitle ->
                 lifecycleScope.launch {
+                    val subTask = SubTask(subTitle = subtaskTitle)
+                    TaskDatabase.getInstance(applicationContext).subtaskDao().insert(subTask)
+
+
+
+
 
                 }
                 dialog.dismiss()
@@ -99,6 +116,28 @@ class AddDetails : AppCompatActivity() {
 
             dialog.show()
         }
+    }
+
+    private fun fetchAndDisplaySubTasks() {
+        // Fetch subtasks from the database using LiveData
+        TaskDatabase.getInstance(applicationContext).subtaskDao().getAllSubTasks()
+            .observe(this@AddDetails) { subTasks ->
+                // Update the mutable list with the new subtasks
+                subTaskList.clear()
+                subTaskList.addAll(subTasks)
+
+                // Notify the adapter that the data has changed
+                subtaskAdapter.notifyDataSetChanged()
+
+                // Update the "10 task today" text view with the number of subtasks
+                val subtasksCount = subTaskList.size
+                val textViewTaskToday = findViewById<TextView>(R.id.textView)
+                textViewTaskToday.text = "$subtasksCount task today"
+            }
+    }
+    fun setAdapter(subtaskList: List<SubTask>) {
+        subtaskAdapter.subTaskList = subtaskList
+        subtaskAdapter.notifyDataSetChanged()
     }
 
 
@@ -116,10 +155,7 @@ class AddDetails : AppCompatActivity() {
         return dataVals
     }
 
-    fun setAdapter(subtaskList: List<SubTask>){
-        subtaskAdapter = SubTaskAdapter(subtaskList)
-        recyclerView.adapter = subtaskAdapter
-    }
+
 
 
 }
