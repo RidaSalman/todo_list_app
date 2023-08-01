@@ -2,18 +2,18 @@ package com.example.to_dolist
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.Adapters.CalenderAdapter
 import com.example.to_dolist.Adapters.SubTaskAdapter
-import com.example.to_dolist.Models.SubTask
 import com.example.to_dolist.Database.TaskDatabase
 import com.example.to_dolist.Dialogs.DialogAddTask
+import com.example.to_dolist.Models.SubTask
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -35,6 +35,7 @@ class AddDetails : AppCompatActivity() {
         Color.GRAY,
     )
     private val colorsList = colorClassArray.toList()
+    private var taskId: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +54,9 @@ class AddDetails : AppCompatActivity() {
         pieChart.setDrawEntryLabels(false)// Disable chart description
 
 
-
         pieChart.invalidate()
 
-        val taskId = intent.getLongExtra("taskId", -1)
+        taskId = intent.getLongExtra("taskId", -1)
         if (taskId != -1L) {
             // Fetch the task details from the database using the taskId
             lifecycleScope.launch {
@@ -76,7 +76,7 @@ class AddDetails : AppCompatActivity() {
         // Set up the RecyclerView for subtasks
         recyclerViewSubTask = findViewById(R.id.recyclerview_subtask)
         recyclerViewSubTask.layoutManager = LinearLayoutManager(this)
-        subtaskAdapter = SubTaskAdapter(subTaskList){
+        subtaskAdapter = SubTaskAdapter(subTaskList) {
             lifecycleScope.launch {
                 TaskDatabase.getInstance(applicationContext).subtaskDao().update(it)
             }
@@ -88,22 +88,18 @@ class AddDetails : AppCompatActivity() {
 
 
         button.setOnClickListener {
-            val dialog = DialogAddTask(this, true, onRightButtonClickListener = { dialog, subtaskTitle ->
-                lifecycleScope.launch {
-                    val subTask = SubTask(subTitle = subtaskTitle)
-                    TaskDatabase.getInstance(applicationContext).subtaskDao().insert(subTask)
+            val dialog =
+                DialogAddTask(this, true, onRightButtonClickListener = { dialog, subtaskTitle ->
+                    lifecycleScope.launch {
+                        val subTask = SubTask(subTitle = subtaskTitle, parentId = taskId)
+                        TaskDatabase.getInstance(applicationContext).subtaskDao().insert(subTask)
 
+                    }
+                    dialog.dismiss()
 
-
-
-
-                }
-                dialog.dismiss()
-
-            }, onLeftButtonClickListener = { dialog ->
-                dialog.dismiss()
-
-            })
+                }, onLeftButtonClickListener = { dialog ->
+                    dialog.dismiss()
+                })
 
             dialog.show()
         }
@@ -111,19 +107,25 @@ class AddDetails : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun fetchAndDisplaySubTasks() {
-        // Fetch subtasks from the database using LiveData
+
+        TaskDatabase.getInstance(applicationContext).subtaskDao().getAllSubTasks().removeObservers(this@AddDetails)
+
+
         TaskDatabase.getInstance(applicationContext).subtaskDao().getAllSubTasks()
             .observe(this@AddDetails) { subTasks ->
 
-                setPercentage(subTasks)
-                // Update the mutable list with the new subtasks
                 subTaskList.clear()
-                subTaskList.addAll(subTasks)
 
-                // Notify the adapter that the data has changed
+                for (subTask in subTasks) {
+                    if (subTask.parentId == taskId) {
+                        subTaskList.add(subTask)
+                    }
+                }
+
                 subtaskAdapter.notifyDataSetChanged()
 
-                // Update the "10 task today" text view with the number of subtasks
+                setPercentage(subTaskList)
+
                 val subtasksCount = subTaskList.size
                 val textViewTaskToday = findViewById<TextView>(R.id.textView)
                 textViewTaskToday.text = "$subtasksCount task today"
@@ -131,7 +133,7 @@ class AddDetails : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setPercentage(subTask : List<SubTask>) {
+    private fun setPercentage(subTask: List<SubTask>) {
         val completedCount = subTask.count { it.isComplete }
         val totalTasks = subTask.size
         val percentageCompleted = if (totalTasks > 0) {
