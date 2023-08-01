@@ -1,13 +1,12 @@
 package com.example.to_dolist
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.*
 import androidx.lifecycle.lifecycleScope
-import com.example.to_dolist.Database.Task
+import com.example.to_dolist.Models.Task
 import com.example.to_dolist.Database.TaskDatabase
 import com.example.to_dolist.Database.myExt.showToast
 import com.google.android.material.textfield.TextInputEditText

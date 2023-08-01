@@ -1,4 +1,4 @@
-package com.example.to_dolist.Database
+package com.example.to_dolist.Models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -19,6 +19,7 @@ data class Task(
 data class SubTask(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
+    var isComplete:Boolean = false,
     val subTitle: String,
 )
 

@@ -7,6 +7,8 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.to_dolist.Models.SubTask
+import com.example.to_dolist.Models.Task
 
 @Dao
 interface  TaskDao{

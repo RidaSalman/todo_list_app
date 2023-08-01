@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.Adapters.FeaturedAdapter
-import com.example.to_dolist.Database.Task
+import com.example.to_dolist.Models.Task
 import com.example.to_dolist.Database.TaskDatabase
 import com.example.to_dolist.Database.myExt.showToast
 import kotlinx.coroutines.launch

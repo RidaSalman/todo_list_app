@@ -10,12 +10,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.*
-import com.example.to_dolist.Database.Task
+import com.example.to_dolist.Models.Task
 
 
 
