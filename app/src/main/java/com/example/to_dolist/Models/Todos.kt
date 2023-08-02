@@ -19,6 +19,7 @@ data class Task(
 data class SubTask(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
+    var parentId:Long = 0,
     var isComplete:Boolean = false,
     val subTitle: String,
 )
