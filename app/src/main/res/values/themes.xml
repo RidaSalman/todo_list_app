@@ -28,4 +28,10 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+
+
+    <style name="AppCompatWhiteCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:buttonTint">@color/white</item>
+    </style>
+
 </resources>
