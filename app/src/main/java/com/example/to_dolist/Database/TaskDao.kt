@@ -41,4 +41,10 @@ interface SubTaskDao{
 
     @Query("SELECT * FROM subtasks ORDER BY id DESC")
     fun getAllSubTasks(): LiveData<List<SubTask>>
+
+    @Query("SELECT * FROM subtasks WHERE id = :taskId ORDER BY id DESC")
+    fun getAllSubTasksForTask(taskId: Long): LiveData<List<SubTask>>
+
+
+
 }

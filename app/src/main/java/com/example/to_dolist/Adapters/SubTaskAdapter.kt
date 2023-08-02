@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.to_dolist.Models.SubTask
 import com.example.to_dolist.R
 
-class SubTaskAdapter(var subTaskList: List<SubTask>, var callBackUpdate: ((SubTask) -> Unit)) :
+class SubTaskAdapter(private val taskId: Long,var subTaskList: List<SubTask>, var callBackUpdate: ((SubTask) -> Unit)) :
     RecyclerView.Adapter<SubTaskAdapter.SubTaskViewHolder>() {
 
     inner class SubTaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

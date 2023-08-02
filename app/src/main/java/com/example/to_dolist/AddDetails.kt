@@ -76,7 +76,7 @@ class AddDetails : AppCompatActivity() {
         // Set up the RecyclerView for subtasks
         recyclerViewSubTask = findViewById(R.id.recyclerview_subtask)
         recyclerViewSubTask.layoutManager = LinearLayoutManager(this)
-        subtaskAdapter = SubTaskAdapter(subTaskList){
+        subtaskAdapter = SubTaskAdapter(taskId,subTaskList){
             lifecycleScope.launch {
                 TaskDatabase.getInstance(applicationContext).subtaskDao().update(it)
             }
