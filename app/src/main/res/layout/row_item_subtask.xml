@@ -23,11 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <CheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/checkBoxTaskCompleted"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
+                android:padding="18dp"
+                style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                android:button="@drawable/checkbox_selector"
                 android:background="@drawable/background_circle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
